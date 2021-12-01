@@ -1,0 +1,19 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: rgb(36, 36, 36);
+    color: white;
+}
+
+#canvas1 {
+    border: 1px solid white;
+
+    /* width and height must match the html element, otherwise, it will render distorted */
+    /* best to not even specify in css */
+    /* width: 300px; */
+    /* height: 300px; */
+}
