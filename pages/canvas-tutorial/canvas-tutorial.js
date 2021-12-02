@@ -193,50 +193,128 @@ const ctx3 = canvas3.getContext('2d');
 
 ctx3.strokeStyle = "white";
 
-ctx3.beginPath();
-ctx3.moveTo(50, 50);
-ctx3.lineTo(50, 100);
-ctx3.lineTo(100, 100);
-ctx3.lineTo(100, 50);
-ctx3.stroke();
-
-const hilbert = ( xOrigin, yOrigin, size, orientation) => {
+const hilbert = ( xOrigin, yOrigin, step ) => {
   
-  switch(orientation) {
-    case "A":
-      ctx3.beginPath();
-      ctx3.moveTo(xOrigin - (size/2), yOrigin + (size/2));
-      ctx3.lineTo(xOrigin - (size/2), yOrigin - (size/2));
-      ctx3.lineTo(xOrigin + (size/2), yOrigin - (size/2));
-      ctx3.lineTo(xOrigin + (size/2), yOrigin + (size/2));
-      ctx3.stroke();
-      break;
-    case "B":
-      ctx3.beginPath();
-      ctx3.moveTo(xOrigin + (size/2), yOrigin - (size/2));
-      ctx3.lineTo(xOrigin - (size/2), yOrigin - (size/2));
-      ctx3.lineTo(xOrigin - (size/2), yOrigin + (size/2));
-      ctx3.lineTo(xOrigin + (size/2), yOrigin + (size/2));
-      ctx3.stroke();
-      break;
-    case "C":
-      ctx3.beginPath();
-      ctx3.moveTo(xOrigin + (size/2), yOrigin - (size/2));
-      ctx3.lineTo(xOrigin + (size/2), yOrigin + (size/2));
-      ctx3.lineTo(xOrigin - (size/2), yOrigin + (size/2));
-      ctx3.lineTo(xOrigin - (size/2), yOrigin - (size/2));
-      ctx3.stroke();
-      break;
-    case "D":
-      ctx3.beginPath();
-      ctx3.moveTo(xOrigin - (size/2), yOrigin + (size/2));
-      ctx3.lineTo(xOrigin + (size/2), yOrigin + (size/2));
-      ctx3.lineTo(xOrigin + (size/2), yOrigin - (size/2));
-      ctx3.lineTo(xOrigin - (size/2), yOrigin - (size/2));
-      ctx3.stroke();
-      break;
+  const UP = Math.PI * 3/2;
+  const LEFT = Math.PI;
+  const RIGHT = Math.PI * 2;
+  const DOWN = Math.PI * 1/2;
+
+  const TRAVELUP = (vector) => vector;
+  const TRAVELLEFT = (vector) => vector - Math.PI * 1/2;
+  const TRAVELRIGHT = (vector) => vector + Math.PI * 1/2;
+  const TRAVELDOWN = (vector) => vector + Math.PI;
+
+  const A = (x, y, step, vector) => {
+    
+    let coordinates = [];
+
+    ctx3.beginPath();
+    ctx3.moveTo(x, y);
+
+    x += Math.cos( TRAVELLEFT(vector) ) * step;
+    y += Math.sin( TRAVELLEFT(vector) ) * step;
+    ctx3.lineTo(x, y);
+
+    x += Math.cos( TRAVELUP(vector) ) * step;
+    y += Math.sin( TRAVELUP(vector) ) * step;
+    ctx3.lineTo(x, y);
+
+    x += Math.cos( TRAVELRIGHT(vector) ) * step;
+    y += Math.sin( TRAVELRIGHT(vector) ) * step;
+    ctx3.lineTo(x, y);
+
+    ctx3.stroke()
+
+    coordinates = [x, y];
+    return coordinates
+
   }
+
+  const B = (x, y, step, vector) => {
+    
+    let coordinates = [];
+
+    ctx3.beginPath();
+    ctx3.moveTo(x, y);
+
+    y += Math.sin( TRAVELRIGHT(vector) ) * step;
+    x += Math.cos( TRAVELRIGHT(vector) ) * step;
+    ctx3.lineTo(x, y);
+
+    x += Math.cos( TRAVELUP(vector) ) * step;
+    y += Math.sin( TRAVELUP(vector) ) * step;
+    ctx3.lineTo(x, y);
+
+    x += Math.cos( TRAVELLEFT(vector) ) * step;
+    y += Math.sin( TRAVELLEFT(vector) ) * step;
+    ctx3.lineTo(x, y);
+
+    ctx3.stroke()
+    
+    coordinates = [x, y];
+    return coordinates
+
+  }
+
+  const C = (x, y, step, vector) => {
+    
+    let coordinates = [];
+
+    ctx3.beginPath();
+    ctx3.moveTo(x, y);
+
+    y += Math.sin( TRAVELUP(vector) ) * step;
+    x += Math.cos( TRAVELUP(vector) ) * step;
+    ctx3.lineTo(x, y);
+
+    x += Math.cos( TRAVELRIGHT(vector) ) * step;
+    y += Math.sin( TRAVELRIGHT(vector) ) * step;
+    ctx3.lineTo(x, y);
+
+    x += Math.cos( TRAVELDOWN(vector) ) * step;
+    y += Math.sin( TRAVELDOWN(vector) ) * step;
+    ctx3.lineTo(x, y);
+
+    ctx3.stroke()
+
+    coordinates = [x, y];
+    return coordinates
+
+  }
+
+  const D = (x, y, step, vector) => {
+    
+    let coordinates = [];
+
+    ctx3.beginPath();
+    ctx3.moveTo(x, y);
+
+    y += Math.sin( TRAVELUP(vector) ) * step;
+    x += Math.cos( TRAVELUP(vector) ) * step;
+    ctx3.lineTo(x, y);
+
+    x += Math.cos( TRAVELLEFT(vector) ) * step;
+    y += Math.sin( TRAVELLEFT(vector) ) * step;
+    ctx3.lineTo(x, y);
+
+    x += Math.cos( TRAVELDOWN(vector) ) * step;
+    y += Math.sin( TRAVELDOWN(vector) ) * step;
+    ctx3.lineTo(x, y);
+
+    ctx3.stroke()
+
+    coordinates = [x, y];
+    return coordinates
+
+  }
+
+  let coordinates = [xOrigin, yOrigin];
+  coordinates = A(coordinates[0], coordinates[1], step, UP);
+  coordinates = A(coordinates[0], coordinates[1], step, RIGHT);
+  coordinates = A(coordinates[0], coordinates[1], step, DOWN);
+  coordinates = A(coordinates[0], coordinates[1], step, LEFT);
 
 }
 
-hilbert(200, 100, 100, "A");
+hilbert(150, 150, 50);
