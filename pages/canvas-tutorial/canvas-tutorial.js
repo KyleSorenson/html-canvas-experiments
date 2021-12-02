@@ -72,4 +72,171 @@ if (canvas1.getContext) {
     ctx1.fill();
   })(140, 60);
 
+  // *********** Research Path2D() and SVG path integration further *********
+
 }
+
+const canvas2 = document.getElementById('canvas2');
+const ctx2 = canvas2.getContext('2d');
+
+// 6x6 Red/Green Spectrum Grid
+((xOffset, yOffset) => {
+  for (let i = 0; i < 6; i++) {
+    for (let j = 0; j < 6; j++) {
+      ctx2.fillStyle = `rgb( ${Math.floor(255 - 42.5 * i)}, ${Math.floor(255 - 42.5 * j)}, 0 )`;
+      ctx2.fillRect(j * 25 + xOffset, i * 25 + yOffset, 25, 25)    
+    }  
+  };
+})(0, 0);
+
+// Grid Play #1
+((xOffset, yOffset) => {
+  for (let i = 0; i < 6; i++) {
+    for (let j = 0; j < 6; j++) {
+      ctx2.fillStyle = `hsl( ${Math.floor(360 - 60 * i)}, 50%, ${Math.floor(85 - 15 * j)}% )`;
+      ctx2.fillRect(i * 25 + xOffset, j * 25 + yOffset, 25, 25)    
+    }  
+  };
+})(150, 0);
+
+// Grid Play #2
+((xOffset, yOffset, rows, columns) => {
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < columns; j++) {
+
+      let iOffset = 360 / rows;
+      let jOffset = 100 / columns;
+      ctx2.fillStyle = `hsl( ${Math.floor(360 - iOffset * i)}, 60%, ${Math.floor(100 - jOffset * j)}% )`;
+
+      let boxWidth = 150 / rows;
+      let boxHeight = 150 / columns;
+      ctx2.fillRect(i * boxWidth + xOffset, j * boxHeight + yOffset, boxWidth, boxHeight);    
+    }  
+  };
+})(300, 0, 150, 150);
+
+// Grid Play #2
+((xOffset, yOffset, rows, columns) => {
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < columns; j++) {
+
+      let iOffset = 100 / rows;
+      let jOffset = 100 / columns;
+      ctx2.fillStyle = `hsl( 360, ${Math.floor(100 - iOffset * i)}%, ${Math.floor(100 - jOffset * j)}% )`;
+
+      let boxWidth = 150 / rows;
+      let boxHeight = 150 / columns;
+      ctx2.fillRect(i * boxWidth + xOffset, j * boxHeight + yOffset, boxWidth, boxHeight);    
+    }  
+  };
+})(450, 0, 150, 150);
+
+// Grid Play #3
+((xOffset, yOffset, rows, columns) => {
+
+  let cosGradient = (item, steps) => .5 * Math.cos( (2 * Math.PI * steps * item) / 100 + Math.PI ) + .5;
+
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < columns; j++) {
+
+      let iOffset = 100 / rows;
+      let jOffset = 100 / columns;
+      ctx2.fillStyle = `hsl( 0, 0%, ${ cosGradient(i, iOffset) * cosGradient(j, jOffset) * 100 }% )`;
+
+      let boxWidth = 150 / rows;
+      let boxHeight = 150 / columns;
+      ctx2.fillRect(i * boxWidth + xOffset, j * boxHeight + yOffset, boxWidth, boxHeight);    
+    }  
+  };
+})(600, 0, 150, 150);
+
+// Grid Play #4
+((xOffset, yOffset, rows, columns) => {
+
+  let cosGradient = (item, steps) => .5 * Math.cos( (2 * Math.PI * steps * item) / 100 + Math.PI ) + .5;
+
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < columns; j++) {
+
+      let iOffset = 100 / rows;
+      let jOffset = 100 / columns;
+      ctx2.fillStyle = `rgba( 255, 0, 0, ${ cosGradient(i, iOffset) * cosGradient(j, jOffset) * 100 }% )`;
+
+      let boxWidth = 150 / rows;
+      let boxHeight = 150 / columns;
+      ctx2.fillRect(i * boxWidth + xOffset, j * boxHeight + yOffset, boxWidth, boxHeight);    
+    }  
+  };
+})(0, 150, 15, 15);
+
+// Grid Play #5
+((xOffset, yOffset, rows, columns) => {
+
+  let cosGradient = (item, steps) => .5 * Math.cos( (2 * Math.PI * steps * item) / 100 + Math.PI ) + .5;
+
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < columns; j++) {
+
+      let iOffset = 100 / rows;
+      let jOffset = 100 / columns;
+      ctx2.fillStyle = `hsl( ${ cosGradient(i, iOffset) * cosGradient(j, jOffset) * 360 }, 50%, 50% )`;
+
+      let boxWidth = 150 / rows;
+      let boxHeight = 150 / columns;
+      ctx2.fillRect(i * boxWidth + xOffset, j * boxHeight + yOffset, boxWidth, boxHeight);    
+    }  
+  };
+})(150, 150, 30, 30);
+
+const canvas3 = document.getElementById('canvas3');
+const ctx3 = canvas3.getContext('2d');
+
+ctx3.strokeStyle = "white";
+
+ctx3.beginPath();
+ctx3.moveTo(50, 50);
+ctx3.lineTo(50, 100);
+ctx3.lineTo(100, 100);
+ctx3.lineTo(100, 50);
+ctx3.stroke();
+
+const hilbert = ( xOrigin, yOrigin, size, orientation) => {
+  
+  switch(orientation) {
+    case "A":
+      ctx3.beginPath();
+      ctx3.moveTo(xOrigin - (size/2), yOrigin + (size/2));
+      ctx3.lineTo(xOrigin - (size/2), yOrigin - (size/2));
+      ctx3.lineTo(xOrigin + (size/2), yOrigin - (size/2));
+      ctx3.lineTo(xOrigin + (size/2), yOrigin + (size/2));
+      ctx3.stroke();
+      break;
+    case "B":
+      ctx3.beginPath();
+      ctx3.moveTo(xOrigin + (size/2), yOrigin - (size/2));
+      ctx3.lineTo(xOrigin - (size/2), yOrigin - (size/2));
+      ctx3.lineTo(xOrigin - (size/2), yOrigin + (size/2));
+      ctx3.lineTo(xOrigin + (size/2), yOrigin + (size/2));
+      ctx3.stroke();
+      break;
+    case "C":
+      ctx3.beginPath();
+      ctx3.moveTo(xOrigin + (size/2), yOrigin - (size/2));
+      ctx3.lineTo(xOrigin + (size/2), yOrigin + (size/2));
+      ctx3.lineTo(xOrigin - (size/2), yOrigin + (size/2));
+      ctx3.lineTo(xOrigin - (size/2), yOrigin - (size/2));
+      ctx3.stroke();
+      break;
+    case "D":
+      ctx3.beginPath();
+      ctx3.moveTo(xOrigin - (size/2), yOrigin + (size/2));
+      ctx3.lineTo(xOrigin + (size/2), yOrigin + (size/2));
+      ctx3.lineTo(xOrigin + (size/2), yOrigin - (size/2));
+      ctx3.lineTo(xOrigin - (size/2), yOrigin - (size/2));
+      ctx3.stroke();
+      break;
+  }
+
+}
+
+hilbert(200, 100, 100, "A");
