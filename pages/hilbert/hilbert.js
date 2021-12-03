@@ -34,80 +34,156 @@ function moveAndDraw(turtle, context) {
   context.lineTo(turtle.x, turtle.y);
 }
 
-function hilbertPatternA (turtle, context) {
-  turtle.left();
-  moveAndDraw(turtle, context);
+function hilbertPatternA (turtle, context, n) {
+  
+  if (n > 0) {
+    
+    hilbertPatternD(turtle, context, n-1);
 
-  turtle.right();
-  moveAndDraw(turtle, context);
+    turtle.left();
+    moveAndDraw(turtle, context);
 
-  turtle.right();
-  moveAndDraw(turtle, context);
+    hilbertPatternC(turtle, context, n-1);
+
+    turtle.right();
+    moveAndDraw(turtle, context);
+
+    hilbertPatternA(turtle, context, n-1);
+
+    turtle.right();
+    moveAndDraw(turtle, context);
+
+    hilbertPatternB(turtle, context, n-1);
+    
+  } else {
+    
+    turtle.left();
+    moveAndDraw(turtle, context);
+  
+    turtle.right();
+    moveAndDraw(turtle, context);
+  
+    turtle.right();
+    moveAndDraw(turtle, context);
+  
+  }
 }
 
-function hilbertPatternB (turtle, context) {
-  turtle.right();
-  moveAndDraw(turtle, context);
+function hilbertPatternB (turtle, context, n) {
+  
+  if (n > 0) {
 
-  turtle.left();
-  moveAndDraw(turtle, context);
+    hilbertPatternC(turtle, context, n-1);
 
-  turtle.left();
-  moveAndDraw(turtle, context);
+    turtle.right();
+    moveAndDraw(turtle, context);
+
+    hilbertPatternD(turtle, context, n-1);
+
+    turtle.left();
+    moveAndDraw(turtle, context);
+
+    hilbertPatternB(turtle, context, n-1);
+
+    turtle.left();
+    moveAndDraw(turtle, context);
+
+    hilbertPatternA(turtle, context, n-1);
+  
+  } else {
+
+    turtle.right();
+    moveAndDraw(turtle, context);
+
+    turtle.left();
+    moveAndDraw(turtle, context);
+
+    turtle.left();
+    moveAndDraw(turtle, context);
+
+  }
 }
 
-function hilbertPatternC (turtle, context) {
-  moveAndDraw(turtle, context);
+function hilbertPatternC (turtle, context, n, vector) {
 
-  turtle.right();
-  moveAndDraw(turtle, context);
+  if (n > 0) {
 
-  turtle.right();
-  moveAndDraw(turtle, context);
+    hilbertPatternB(turtle, context, n-1);
+
+    turtle.vector = vector;
+    
+    moveAndDraw(turtle, context);
+    
+    hilbertPatternC(turtle, context, n-1);
+    
+    turtle.vector = vector;
+    turtle.right();
+
+    moveAndDraw(turtle, context);
+    
+    hilbertPatternA(turtle, context, n-1);
+    
+    turtle.vector = vector;
+    turtle.right();
+    turtle.right();
+
+    moveAndDraw(turtle, context);
+
+    hilbertPatternB(turtle, context, n-1);
+
+  } else {
+
+    moveAndDraw(turtle, context);
+
+    turtle.right();
+    moveAndDraw(turtle, context);
+
+    turtle.right();
+    moveAndDraw(turtle, context);
+
+  }
 }
 
-function hilbertPatternD (turtle, context) {
-  moveAndDraw(turtle, context);
+function hilbertPatternD (turtle, context, n) {
 
-  turtle.left();
-  moveAndDraw(turtle, context);
+  if (n > 0) {
+    
+    hilbertPatternA(turtle, context, n-1);
 
-  turtle.left();
-  moveAndDraw(turtle, context);
+    moveAndDraw(turtle, context);
+    
+    hilbertPatternD(turtle, context, n-1);
+
+    turtle.left();
+    moveAndDraw(turtle, context);
+
+    hilbertPatternB(turtle, context, n-1);
+    
+    turtle.left();
+    moveAndDraw(turtle, context);
+    
+    hilbertPatternA(turtle, context, n-1);
+  
+  } else {
+  
+    moveAndDraw(turtle, context);
+  
+    turtle.left();
+    moveAndDraw(turtle, context);
+  
+    turtle.left();
+    moveAndDraw(turtle, context);
+  
+  }
 }
 
-let t = new Turtle(300, 300, UP, 20);
+let t = new Turtle(300, 300, UP, 30);
 
 ctx.beginPath();
 ctx.moveTo(t.x, t.y);
 
-  // hilbertPatternC
-  hilbertPatternB(t, ctx);
-
-  t.right();
-  moveAndDraw(t, ctx);
-
-  hilbertPatternC(t, ctx);
-
-  t.left();
-  moveAndDraw(t, ctx);
-
-  hilbertPatternA(t,ctx);
-
-  moveAndDraw(t, ctx);
-
-  hilbertPatternB(t, ctx);
-
-  //hilbertPatternD
-
-  moveAndDraw(t, ctx);
-
-  hilbertPatternA(t, ctx);
-
-  t.left();
-  moveAndDraw(t, ctx);
-
-  hilbertPatternD(t, ctx);
+// movement instructions here
+hilbertPatternC(t, ctx, 1, UP);
 
 ctx.strokeStyle = "white";
 ctx.stroke();
