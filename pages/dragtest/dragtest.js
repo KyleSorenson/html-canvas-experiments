@@ -34,17 +34,6 @@ function Circle(ctx, r, [x, y], [h, s, l]) {
 let circle = new Circle(context, 50, [...windowCenter], [60, 50, 60]);
 circle.draw();
 
-function clickAndDrag(e) {
-  if (e.clientX <= frameWidth && e.clientY <= frameHeight) {
-    clearFrame(context);
-    circle.x = e.clientX;
-    circle.y = e.clientY;
-    circle.draw();
-    console.log(`[${e.clientX},${e.clientY}]`);
-  }
-}
-
-
 
 window.addEventListener('mousedown', event => {
 
@@ -60,3 +49,12 @@ window.addEventListener('mouseup', event => {
 
 })
 
+function clickAndDrag(e) {
+  if (e.clientX >= 0 && e.clientX <= frameWidth && e.clientY >=0 && e.clientY <= frameHeight) {
+    clearFrame(context);
+    circle.x = e.clientX;
+    circle.y = e.clientY;
+    circle.draw();
+    console.log(`[${e.clientX},${e.clientY}]`);
+  }
+}
